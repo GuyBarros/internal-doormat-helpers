@@ -1,14 +1,4 @@
-provider "azurerm" {
-    subscription_id = var.subscription_id
-  features {}
-}
 
-# Data source to get the current subscription ID and tenant ID
-data "azurerm_subscription" "primary" {}
-
-data "azurerm_client_config" "vault_platform_team" {}
-
-data "azuread_client_config" "current" {}
 
 resource "azuread_application" "vault_platform_team_app" {
   display_name = "guy_test_20240927_v2"

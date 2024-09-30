@@ -20,3 +20,9 @@ export VAULT_TOKEN=<YOUR_VAULT_TOKEN>
 terraform init
 
 terraform plan
+
+terraform apply
+
+TF_OUTPUT=$(terraform output -json)
+
+az ad app owner add --id 967f5de1-8c5f-41af-8213-5fe31037424a --owner-object-id $(echo $TF_OUTPUT | jq -r .current_user.value)
