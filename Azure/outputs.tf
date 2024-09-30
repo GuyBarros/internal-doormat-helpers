@@ -33,5 +33,5 @@ output "tenant_id" {
 
 output "app_reg_id" {
   description = "The Tenant ID for the current Azure Tenant"
-  value       = azuread_application_registration.example.id
+  value       = azuread_application_registration.wif_app.id
 }

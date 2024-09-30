@@ -7,7 +7,7 @@ provider "vault" {
 resource "vault_azure_secret_backend" "azure" {
   path            = var.azure_secrets_path
   tenant_id       = data.azurerm_client_config.vault_platform_team.tenant_id
-  client_id       = azuread_application_registration.example.id
+  client_id       = azuread_application_registration.wif_app.id
   subscription_id = data.azurerm_subscription.primary.subscription_id
 
   # This is something like vault.the-tech-tutorial.com:8200/v1/platform-team/identity/oidc/plugins

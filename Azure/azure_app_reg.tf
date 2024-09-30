@@ -1,8 +1,8 @@
-resource "azuread_application_registration" "example" {
+resource "azuread_application_registration" "wif_app" {
   display_name = "guy_wif_test"
 }
 resource "azuread_application_password" "vault_app_reg_password" {
-  application_id = azuread_application_registration.example.id
+  application_id = azuread_application_registration.wif_app.id
 }
 
 /*
@@ -12,8 +12,8 @@ resource "azuread_application_owner" "doormat_user" {
 }
 */
 
-resource "azuread_application_federated_identity_credential" "example" {
-  application_id = azuread_application_registration.example.id
+resource "azuread_application_federated_identity_credential" "wif_app_fed_cred" {
+  application_id = azuread_application_registration.wif_app.id
   display_name   = "vault-wif"
   #issuer         = "${var.vault_addr}/v1/${var.app_name}/identity/oidc/plugins"
   issuer         = "${var.vault_addr}/v1/identity/oidc/plugins"
@@ -26,7 +26,7 @@ resource "azuread_application_federated_identity_credential" "example" {
 
 
 resource "azuread_application_api_access" "example_msgraph" {
-  application_id = azuread_application_registration.example.id
+  application_id = azuread_application_registration.wif_app.id
   api_client_id  = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
 
   role_ids = [
