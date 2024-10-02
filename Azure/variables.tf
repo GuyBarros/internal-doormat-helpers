@@ -1,20 +1,45 @@
 variable "subscription_id" {
-    description = "the Azure subscription ID for the Azure Provider"
-}
-variable "app_name" {
-  description   = "Will be used for azure app and namespace naming"
-  default       = "vault-platform-all-in-one"
-  type         = string
+  description = "the Azure subscription ID for the Azure Provider"
 }
 
-variable "vault_addr" {
-  description = "The Vault Address"
+variable "public_oidc_issuer_url" {
   type        = string
-  sensitive   = true
+  description = "Publicly available URL of Vault or an external proxy that serves the OIDC discovery document."
+
+  validation {
+    condition     = startswith(var.public_oidc_issuer_url, "https://")
+    error_message = "The 'public_oidc_issuer_url' must start with https://, e.g. 'https://vault.foo.com'."
+  }
 }
 
-variable "azure_secrets_path" {
-  description = "Path where Azure Secrets Engine is enabled (default is 'azure/')"
+variable "azure_audience" {
   type        = string
-  default     = "azure"
+  default     = "api://AzureADTokenExchange"
+  description = "List of audiences (aud) that identify the intended recipients of the token."
+}
+
+variable "application_permissions" {
+  type        = list(string)
+  description = "The list of MS Graph API permissions must be assigned to the service principal provided to Vault for managing Azure. "
+  default = [
+    "GroupMember.ReadWrite.All",
+
+    # Dynamic Service Principals
+    "Application.ReadWrite.OwnedBy",
+
+    # Existing Service Principals
+    "Application.ReadWrite.All",
+  ]
+}
+
+variable "app_prefix" {
+  type        = string
+  description = "The prefix for the Vault plugin app"
+  default     = "vault-plugin-wif"
+}
+
+variable "vault_namespace_id" {
+  type        = string
+  description = "Vault namespace ID, not the name or path."
+  default     = "root"
 }
